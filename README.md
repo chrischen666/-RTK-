@@ -2,7 +2,7 @@
 
 簡短描述這個專案是做什麼的，例如：
 
-> 一個使用 React + Redux Toolkit開發的電商網站
+> 一個使用 React + Redux Toolkit 開發的電商網站
 
 ---
 
