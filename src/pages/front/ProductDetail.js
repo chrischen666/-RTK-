@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useOutletContext, useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { createAsyncMessage } from '../../slice/messageSlice';
 
 function ProductDetail() {
   const [product, setProduct] = useState({});
@@ -8,12 +10,13 @@ function ProductDetail() {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(false)
   const { getCart } = useOutletContext();
+  const dispatch = useDispatch();
 
   const getProduct = async (id) => {
     const productRes = await axios.get(
       `/v2/api/${process.env.REACT_APP_API_PATH}/product/${id}`,
     );
-    console.log(productRes);
+
     setProduct(productRes.data.product);
   };
 
@@ -30,12 +33,13 @@ function ProductDetail() {
         `/v2/api/${process.env.REACT_APP_API_PATH}/cart`,
         data,
       );
-      console.log(res);
+      dispatch(createAsyncMessage(res.data));
       getCart();
       setIsLoading(false)
     } catch (error) {
       console.log(error);
       setIsLoading(false);
+      dispatch(createAsyncMessage(error.response.data));
     }
   }
 

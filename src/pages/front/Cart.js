@@ -1,11 +1,13 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { createAsyncMessage } from '../../slice/messageSlice';
 
 function Cart() {
   const { cartData, getCart } = useOutletContext();
   const [loadingItems, setLoadingItem] = useState([]);
-
+  const dispatch = useDispatch();
   const removeCartItem = async (id) => {
     try {
       const res = await axios.delete(
@@ -32,11 +34,13 @@ function Cart() {
         data,
       );
       console.log(res);
+      dispatch(createAsyncMessage(res.data));
       setLoadingItem(
         loadingItems.filter((loadingObject) => loadingObject !== item.id),
       );
       getCart();
     } catch (error) {
+      dispatch(createAsyncMessage(error.response.data));
       console.log(error);
     }
   };
